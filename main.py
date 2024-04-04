@@ -10,6 +10,7 @@ import threading
 import webbrowser
 import subprocess
 import multiprocessing
+from tkinter import messagebox
 
 # (https://stackoverflow.com/questions/9144724/unknown-encoding-idna-in-python-requests)
 import encodings.idna
@@ -241,8 +242,8 @@ class ModLoader(QMainWindow):
 
             if ntype == NotificationType.LoadingMod:
                 modPath = notification.args[0]
-                self.loading.setText(f"Loading mod '{modPath or 'from cache'}'")
-
+                self.loading.setText(f"Loading mod '{modPath or 'from cache'}'")               
+                    
             elif ntype == NotificationType.ModElementsCount:
                 modHash, count = notification.args
                 self.progressDialog.setMaximum(count)
@@ -383,11 +384,12 @@ class ModLoader(QMainWindow):
 
         elif cmd == Environment.InstallMod:
             installing, modHash = data[1]
-            if installing:
+            if installing:            
                 modClass = self.mods.mods[modHash]
                 self.progressDialog.setTitle(f"Installing mod '{modClass.name}'...")
                 self.progressDialog.setContent("Loading mod...")
                 self.progressDialog.show()
+                
 
         elif cmd == Environment.UninstallMod:
             uninstalling, modHash = data[1]
@@ -758,7 +760,8 @@ def RunApp():
 
     window = ModLoader()
     window.show()
-
+    messagebox.showwarning("Warning", "Please remember that ALL SKIN MODS require a PAID SKIN to work.\nBe sure to read the Brawlhalla Modding Community rules first!")
+    webbrowser.open_new("https://gamebanana.com/games/rules/5704")
     exitId = app.exec()
     TerminateApp(exitId)
 
